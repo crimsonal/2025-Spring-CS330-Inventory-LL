@@ -1,6 +1,7 @@
 package items;
 
 import containers.LinkedList;
+import containers.LinkedList.Node;
 
 
 /**
@@ -30,6 +31,7 @@ public class Inventory
         // lhs needs to have items added to it.
         // rhs's size is needed
         // lhs.????(rhs.????)
+        lhs.addItems(rhs.size());
     }
 
     /**
@@ -94,7 +96,7 @@ public class Inventory
     public boolean isFull()
     {
         // Replace the next line
-        return false;
+        return this.slots.currentSize == this.capacity;
     }
 
     /**
@@ -118,6 +120,14 @@ public class Inventory
     public ItemStack findMatchingItemStack(ItemStack key)
     {
         // Add the necessary sequential search loop
+        Node<ItemStack> it = this.slots.head;
+        
+        while (it != null) {
+            if (key.equals(it.data)) {
+                return it.data;
+            }
+            it = it.next;
+        }
 
         return null;
     }
@@ -133,6 +143,15 @@ public class Inventory
 
         // Use the appendNode/add logic from Review 1 as your starting point
         // Once we reach this function... we know that `toAdd` must be stored
+        if (this.slots.head == null) {
+            this.slots.head = newNode;
+            this.slots.tail = newNode;
+            this.slots.currentSize = 1;
+        } else {
+            this.slots.tail.next = newNode;
+            this.slots.tail = this.slots.tail.next;
+            this.slots.currentSize++;
+        }
     }
 
     /**
